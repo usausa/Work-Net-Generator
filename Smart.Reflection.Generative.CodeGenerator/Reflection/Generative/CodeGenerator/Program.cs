@@ -1,4 +1,4 @@
-﻿namespace ExampleApp
+﻿namespace Smart.Reflection.Generative.CodeGenerator
 {
     using System;
 

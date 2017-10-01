@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <RootNamespace>Smart</RootNamespace>
+    <CodeAnalysisRuleSet>..\Smart.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
