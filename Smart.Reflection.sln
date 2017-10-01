@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smart.Reflection", "Smart.Reflection\Smart.Reflection.csproj", "{190511BF-3B83-4E16-B2F3-270E4BD745D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleApp", "ExampleApp\ExampleApp.csproj", "{9FBAA829-3E6F-4125-93CC-48AC4D74425D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smart.Reflection.CodeGenerator", "Smart.Reflection.CodeGenerator\Smart.Reflection.CodeGenerator.csproj", "{24E30C7C-EF44-4232-A4FC-0631F3295132}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smart.Reflection.Generative", "Smart.Reflection.Generative\Smart.Reflection.Generative.csproj", "{55BF0419-4590-4A96-A657-83E41C54A5C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleApp", "ExampleApp\ExampleApp.csproj", "{9FBAA829-3E6F-4125-93CC-48AC4D74425D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smart.Reflection.Generative.CodeGenerator", "Smart.Reflection.Generative.CodeGenerator\Smart.Reflection.Generative.CodeGenerator.csproj", "{ED1BFC41-1CDD-4C1F-89E2-5BD917A821BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,18 +15,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{190511BF-3B83-4E16-B2F3-270E4BD745D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{190511BF-3B83-4E16-B2F3-270E4BD745D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{190511BF-3B83-4E16-B2F3-270E4BD745D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{190511BF-3B83-4E16-B2F3-270E4BD745D6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{24E30C7C-EF44-4232-A4FC-0631F3295132}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{24E30C7C-EF44-4232-A4FC-0631F3295132}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{24E30C7C-EF44-4232-A4FC-0631F3295132}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{24E30C7C-EF44-4232-A4FC-0631F3295132}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9FBAA829-3E6F-4125-93CC-48AC4D74425D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9FBAA829-3E6F-4125-93CC-48AC4D74425D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FBAA829-3E6F-4125-93CC-48AC4D74425D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FBAA829-3E6F-4125-93CC-48AC4D74425D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55BF0419-4590-4A96-A657-83E41C54A5C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55BF0419-4590-4A96-A657-83E41C54A5C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55BF0419-4590-4A96-A657-83E41C54A5C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55BF0419-4590-4A96-A657-83E41C54A5C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED1BFC41-1CDD-4C1F-89E2-5BD917A821BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED1BFC41-1CDD-4C1F-89E2-5BD917A821BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED1BFC41-1CDD-4C1F-89E2-5BD917A821BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED1BFC41-1CDD-4C1F-89E2-5BD917A821BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
