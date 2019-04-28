@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <UsingTask TaskName="RoslynTask.WorkBuildTask" AssemblyFile="$(MSBuildProjectDirectory)\..\RoslynTask\bin\Debug\netstandard2.0\RoslynTask.dll" />
+
+  <PropertyGroup>
+	<CoreCompileDependsOn>$(CoreCompileDependsOn);GenerateWork;</CoreCompileDependsOn>
+  </PropertyGroup>
+
+  <Target Name="GenerateWork" BeforeTargets="CoreCompile">
+	<WorkBuildTask />
+	<Message Text="Work generated" />
+  </Target>
+
+</Project>
