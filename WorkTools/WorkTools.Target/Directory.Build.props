@@ -2,7 +2,7 @@
 <Project>
 
   <ItemGroup>
-    <DotNetCliToolReference Include="dotnet-work-codegen" Version="*" />
+    <DotNetCliToolReference Include="WorkTools.Tool" Version="*" />
   </ItemGroup>
 
 </Project>
