@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project>
+
+  <PropertyGroup>
+    <GenerateCodeDependsOn>
+      $(GenerateCodeDependsOn);
+      ResolveReferences;
+      PrepareGenerateCode;
+      GenerateCodeCore
+    </GenerateCodeDependsOn>
+  </PropertyGroup>
+
+  <Target Name="GenerateCode" DependsOnTargets="$(GenerateCodeDependsOn)" BeforeTargets="CoreCompile;PrepareResources">
+  </Target>
+
+  <Target Name="PrepareGenerateCode">
+    <Message Text="Prepare generate code" Importance="normal" />
+  </Target>
+
+  <Target Name="GenerateCodeCore">
+    <Exec Command="dotnet work-codegen"
+          StandardOutputImportance="normal"  ContinueOnError="true" />
+    <Message Text="Prepare generate code" Importance="normal" />
+  </Target>
+
+</Project>
