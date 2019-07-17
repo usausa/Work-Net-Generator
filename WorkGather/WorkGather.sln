@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29102.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkGather", "WorkGather\WorkGather.csproj", "{DCC24397-FE6C-4547-9CA2-E4A1861ABCCD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkGather.Target", "WorkGather.Target\WorkGather.Target.csproj", "{DCAD6EDE-3F10-43AE-B5C6-208CB0D35E4E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DCC24397-FE6C-4547-9CA2-E4A1861ABCCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCC24397-FE6C-4547-9CA2-E4A1861ABCCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCC24397-FE6C-4547-9CA2-E4A1861ABCCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCC24397-FE6C-4547-9CA2-E4A1861ABCCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCAD6EDE-3F10-43AE-B5C6-208CB0D35E4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCAD6EDE-3F10-43AE-B5C6-208CB0D35E4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCAD6EDE-3F10-43AE-B5C6-208CB0D35E4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCAD6EDE-3F10-43AE-B5C6-208CB0D35E4E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0942F89C-BA09-4496-A88B-925A9222B30D}
+	EndGlobalSection
+EndGlobal
