@@ -1,6 +1,6 @@
 ﻿namespace WorkMerge.Target
 {
-    public class Target
+    public class Other
     {
     }
 }

@@ -1,6 +1,10 @@
-﻿namespace WorkMerge.Target.Option
+﻿namespace WorkMerge.Target
 {
-    public class Option
+    public class Option : ITarget
     {
+        public string Execute()
+        {
+            return "hoge";
+        }
     }
 }

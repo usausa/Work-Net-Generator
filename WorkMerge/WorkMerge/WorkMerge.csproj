@@ -6,8 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.1.0" />
-    <PackageReference Include="Mono.Cecil" Version="0.10.4" />
+    <ProjectReference Include="..\WorkMerge.Target\WorkMerge.Target.csproj" />
   </ItemGroup>
 
 </Project>
