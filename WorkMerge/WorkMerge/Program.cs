@@ -1,4 +1,11 @@
-﻿namespace WorkMerge
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using Mono.Cecil.Cil;
+
+namespace WorkMerge
 {
     using Mono.Cecil;
 
@@ -12,52 +19,30 @@
         private const string Output =
             "..\\..\\..\\..\\WorkMerge.Target\\bin\\Release\\netstandard2.0\\WorkMerge.Target2.dll";
 
+        private static ModuleDefinition module;
+
         static void Main()
         {
             var target = AssemblyDefinition.ReadAssembly(Target, new ReaderParameters(ReadingMode.Immediate));
             var option = AssemblyDefinition.ReadAssembly(Option);
 
-            foreach (var typeDefinition in option.MainModule.Types)
+            var importer = new TypeImporter(target.MainModule);
+            foreach (var definition in option.Modules.SelectMany(x => x.Types).ToArray())
             {
-                Import(target.MainModule, typeDefinition);
+                if (!definition.FullName.StartsWith("<"))
+                {
+                    importer.Clone(definition);
+                }
             }
 
             target.Write(Output);
-        }
 
-        static void Import(ModuleDefinition module, TypeDefinition type)
-        {
-            CreateType(module, type);
-
-            // TODO
-        }
-
-        static TypeDefinition CreateType(ModuleDefinition module, TypeDefinition type)
-        {
-            var newType = new TypeDefinition(type.Namespace, type.Name, type.Attributes);
-
-            newType.BaseType = type.BaseType;   // IF相手なら不要
-
-            foreach (var typeReference in type.Interfaces)
-            {
-                newType.Interfaces.Add(typeReference);
-            }
-
-            //foreach (var typeReference in type.CustomAttributes)
-            //{
-            //    // TODO Clone
-            //    //newType.CustomAttributes.Add(typeReference);
-            //}
-
-            // TODO
-            module.Types.Add(newType);
-
-            return newType;
-        }
-
-        static void CloneField(TypeDefinition newType, FieldDefinition field)
-        {
-
+            var assembly = Assembly.LoadFile(Path.GetFullPath(Output));
+            var type = assembly.GetType("WorkMerge.Target.Option");
+            var obj = Activator.CreateInstance(type, new object[] { "hoge" });
+            var method = type.GetMethod("ITarget");
+            var ret = method.Invoke(obj, null);
+            Debug.WriteLine(ret);
         }
     }
 }
