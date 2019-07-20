@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkMerge", "WorkMerge\WorkMerge.csproj", "{0E80FC09-E3BB-4311-83C4-D2AAA888ADF4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkMerge", "WorkMerge\WorkMerge.csproj", "{0E80FC09-E3BB-4311-83C4-D2AAA888ADF4}"
 	ProjectSection(ProjectDependencies) = postProject
 		{84D3A59F-6BAB-4747-8045-07FF3698A478} = {84D3A59F-6BAB-4747-8045-07FF3698A478}
 		{5A0DABB3-521A-496E-B0A3-75CD592E085B} = {5A0DABB3-521A-496E-B0A3-75CD592E085B}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkMerge.Target", "WorkMerge.Target\WorkMerge.Target.csproj", "{5A0DABB3-521A-496E-B0A3-75CD592E085B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkMerge.Target", "WorkMerge.Target\WorkMerge.Target.csproj", "{5A0DABB3-521A-496E-B0A3-75CD592E085B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkMerge.Target.Option", "WorkMerge.Target.Option\WorkMerge.Target.Option.csproj", "{84D3A59F-6BAB-4747-8045-07FF3698A478}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkMerge.Target.Option", "WorkMerge.Target.Option\WorkMerge.Target.Option.csproj", "{84D3A59F-6BAB-4747-8045-07FF3698A478}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,12 +23,12 @@ Global
 		{0E80FC09-E3BB-4311-83C4-D2AAA888ADF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E80FC09-E3BB-4311-83C4-D2AAA888ADF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E80FC09-E3BB-4311-83C4-D2AAA888ADF4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5A0DABB3-521A-496E-B0A3-75CD592E085B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5A0DABB3-521A-496E-B0A3-75CD592E085B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A0DABB3-521A-496E-B0A3-75CD592E085B}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{5A0DABB3-521A-496E-B0A3-75CD592E085B}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{5A0DABB3-521A-496E-B0A3-75CD592E085B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A0DABB3-521A-496E-B0A3-75CD592E085B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{84D3A59F-6BAB-4747-8045-07FF3698A478}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{84D3A59F-6BAB-4747-8045-07FF3698A478}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84D3A59F-6BAB-4747-8045-07FF3698A478}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{84D3A59F-6BAB-4747-8045-07FF3698A478}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{84D3A59F-6BAB-4747-8045-07FF3698A478}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84D3A59F-6BAB-4747-8045-07FF3698A478}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection

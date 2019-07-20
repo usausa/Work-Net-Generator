@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WorkMerge.Target\WorkMerge.Target.csproj" />
+    <PackageReference Include="Mono.Cecil" Version="0.10.4" />
   </ItemGroup>
 
 </Project>
