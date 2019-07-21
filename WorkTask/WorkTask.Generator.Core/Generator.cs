@@ -40,6 +40,8 @@
             var bytes = File.ReadAllBytes(targetFile);
             targetAssembly = Assembly.Load(bytes);
             targetMetadataReference = MetadataReference.CreateFromImage(bytes);
+            //targetAssembly = Assembly.LoadFrom(targetFile);
+            //targetMetadataReference = MetadataReference.CreateFromFile(targetFile);
         }
 
         private static void AddReference(HashSet<Assembly> assemblies, Assembly assembly)
