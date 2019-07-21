@@ -36,6 +36,7 @@
             this.outputFile = outputFile;
             this.sourceFiles = sourceFiles;
 
+            // TODO これでないとつかんでしまうが、パスロードでないと参照先を読み込めない
             var bytes = File.ReadAllBytes(targetFile);
             targetAssembly = Assembly.Load(bytes);
             targetMetadataReference = MetadataReference.CreateFromImage(bytes);
@@ -58,6 +59,11 @@
 
         public bool Build()
         {
+            // TODO
+            //var types = targetAssembly.ExportedTypes
+            //    .Where(x => x.IsInterface && (x.GetCustomAttribute<TargetAttribute>() != null))
+            //    .ToArray();
+
             var source = CreateSource();
             var syntax = CSharpSyntaxTree.ParseText(source);
 
