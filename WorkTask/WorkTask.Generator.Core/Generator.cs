@@ -1,20 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using WorkTask.Library;
-
-namespace WorkTask.Generator.Core
+﻿namespace WorkTask.Generator.Core
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CSharp;
+
+    using WorkTask.Library;
+
     public class Generator
     {
         private static readonly HashSet<Assembly> DefaultReference = new HashSet<Assembly>();
 
         private readonly Action<string> logger;
+
+        private readonly string outputFile;
+
+        private readonly string[] sourceFiles;
 
         private readonly Assembly targetAssembly;
 
@@ -25,11 +30,15 @@ namespace WorkTask.Generator.Core
             AddReference(DefaultReference, typeof(Engine).Assembly);
         }
 
-        public Generator(byte[] assemblyBytes, Action<string> logger)
+        public Generator(string targetFile, string outputFile, string[] sourceFiles, Action<string> logger)
         {
             this.logger = logger;
-            targetAssembly = Assembly.Load(assemblyBytes);
-            targetMetadataReference = MetadataReference.CreateFromImage(assemblyBytes);
+            this.outputFile = outputFile;
+            this.sourceFiles = sourceFiles;
+
+            var bytes = File.ReadAllBytes(targetFile);
+            targetAssembly = Assembly.Load(bytes);
+            targetMetadataReference = MetadataReference.CreateFromImage(bytes);
         }
 
         private static void AddReference(HashSet<Assembly> assemblies, Assembly assembly)
@@ -47,7 +56,7 @@ namespace WorkTask.Generator.Core
             }
         }
 
-        public byte[] Build(string name)
+        public bool Build()
         {
             var source = CreateSource();
             var syntax = CSharpSyntaxTree.ParseText(source);
@@ -64,7 +73,7 @@ namespace WorkTask.Generator.Core
                 optimizationLevel: OptimizationLevel.Release);
 
             var compilation = CSharpCompilation.Create(
-                name,
+                Path.GetFileName(outputFile),
                 new[] { syntax },
                 metadataReferences,
                 options);
@@ -79,11 +88,13 @@ namespace WorkTask.Generator.Core
                     {
                         logger?.Invoke(diagnostic.GetMessage());
                     }
-                    return null;
+                    return false;
                 }
 
                 ms.Seek(0, SeekOrigin.Begin);
-                return ms.ToArray();
+                File.WriteAllBytes(outputFile, ms.ToArray());
+
+                return true;
             }
         }
 

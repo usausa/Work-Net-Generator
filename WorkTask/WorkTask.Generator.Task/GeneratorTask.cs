@@ -1,11 +1,9 @@
-﻿using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using Microsoft.Build.Framework;
-
-namespace WorkTask.Generator.Task
+﻿namespace WorkTask.Generator.Task
 {
+    using System.IO;
+    using System.Linq;
+
+    using Microsoft.Build.Framework;
     using Microsoft.Build.Utilities;
 
     public class GeneratorTask : Task
@@ -35,21 +33,16 @@ namespace WorkTask.Generator.Task
             Log.LogMessage("[SourceFiles]");
             LogFileInfo(OutputFile.ItemSpec);
 
-            var assemblyBytes = File.ReadAllBytes(Path.GetFullPath(TargetFile.ItemSpec));
-            var generator = new Generator.Core.Generator(assemblyBytes, message =>
-            {
-                Log.LogError(message);
-            });
+            var generator = new Generator.Core.Generator(
+                Path.GetFullPath(TargetFile.ItemSpec),
+                Path.GetFullPath(OutputFile.ItemSpec),
+                SourceFiles.Select(x => Path.GetFullPath(x.ItemSpec)).ToArray(),
+                message =>
+                {
+                    Log.LogError(message);
+                });
 
-            var newBytes = generator.Build(Path.GetFileName(OutputFile.ItemSpec));
-            if (newBytes == null)
-            {
-                return false;
-            }
-
-            File.WriteAllBytes(Path.GetFullPath(OutputFile.ItemSpec), newBytes);
-
-            return true;
+            return generator.Build();
         }
 
         private void LogFileInfo(string file)

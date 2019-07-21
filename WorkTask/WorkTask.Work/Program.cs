@@ -11,16 +11,20 @@ namespace WorkTask.Work
     {
         static void Main(string[] args)
         {
-            var path = Path.GetFullPath(@"..\..\..\..\WorkTask.Target\bin\Release\netstandard2.0\WorkTask.Target.dll");
-            var bytes = File.ReadAllBytes(path);
+            var target = Path.GetFullPath("WorkTask.Target.dll");
+            var output = Path.GetFullPath("WorkTask.Target_Impl.dll");
+            var sources = Directory.GetFiles(@"..\..\..\..\WorkTask.Target", "*.cs").Select(Path.GetFullPath).ToArray();
 
-            var generator = new Generator.Core.Generator(bytes, message =>
-            {
-                Debug.WriteLine(message);
-            });
+            var generator = new Generator.Core.Generator(
+                target,
+                output,
+                sources,
+                message =>
+                {
+                    Debug.WriteLine(message);
+                });
 
-            var newBytes = generator.Build("WorkTask.Target2.dll");
-            File.WriteAllBytes("WorkTask.Target2.dll", newBytes);
+            var result = generator.Build();
 
             var newAssembly = Assembly.LoadFile(Path.GetFullPath("WorkTask.Target2.dll"));
             var types = newAssembly.ExportedTypes.ToArray();
