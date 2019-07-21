@@ -16,14 +16,20 @@ namespace WorkTask.Generator.Core
 
         private readonly Action<string> logger;
 
+        private readonly Assembly targetAssembly;
+
+        private readonly MetadataReference targetMetadataReference;
+
         static Generator()
         {
             AddReference(DefaultReference, typeof(Engine).Assembly);
         }
 
-        public Generator(Action<string> logger)
+        public Generator(byte[] assemblyBytes, Action<string> logger)
         {
             this.logger = logger;
+            targetAssembly = Assembly.Load(assemblyBytes);
+            targetMetadataReference = MetadataReference.CreateFromImage(assemblyBytes);
         }
 
         private static void AddReference(HashSet<Assembly> assemblies, Assembly assembly)
@@ -41,16 +47,16 @@ namespace WorkTask.Generator.Core
             }
         }
 
-        public byte[] Build(string name, Type type)
+        public byte[] Build(string name)
         {
             var source = CreateSource();
             var syntax = CSharpSyntaxTree.ParseText(source);
 
             var references = new HashSet<Assembly>(DefaultReference);
-            AddReference(references, type.Assembly);
 
             var metadataReferences = references
                 .Select(x => MetadataReference.CreateFromFile(x.Location))
+                .Append(targetMetadataReference)
                 .ToArray();
 
             var options = new CSharpCompilationOptions(

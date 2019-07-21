@@ -35,15 +35,13 @@ namespace WorkTask.Generator.Task
             Log.LogMessage("[SourceFiles]");
             LogFileInfo(OutputFile.ItemSpec);
 
-            var assembly = Assembly.LoadFile(Path.GetFullPath(TargetFile.ItemSpec));
-            var type = assembly.GetType("WorkTask.Target.IExecute");
-
-            var generator = new Generator.Core.Generator(message =>
+            var assemblyBytes = File.ReadAllBytes(Path.GetFullPath(TargetFile.ItemSpec));
+            var generator = new Generator.Core.Generator(assemblyBytes, message =>
             {
                 Log.LogError(message);
             });
 
-            var newBytes = generator.Build(Path.GetFileName(OutputFile.ItemSpec), type);
+            var newBytes = generator.Build(Path.GetFileName(OutputFile.ItemSpec));
             if (newBytes == null)
             {
                 return false;

@@ -11,15 +11,15 @@ namespace WorkTask.Work
     {
         static void Main(string[] args)
         {
-            var assembly = Assembly.LoadFile(Path.GetFullPath(@"..\..\..\..\WorkTask.Target\bin\Release\netstandard2.0\WorkTask.Target.dll"));
-            var type = assembly.GetType("WorkTask.Target.IExecute");
+            var path = Path.GetFullPath(@"..\..\..\..\WorkTask.Target\bin\Release\netstandard2.0\WorkTask.Target.dll");
+            var bytes = File.ReadAllBytes(path);
 
-            var generator = new Generator.Core.Generator(message =>
+            var generator = new Generator.Core.Generator(bytes, message =>
             {
                 Debug.WriteLine(message);
             });
 
-            var newBytes = generator.Build("WorkTask.Target2.dll", type);
+            var newBytes = generator.Build("WorkTask.Target2.dll");
             File.WriteAllBytes("WorkTask.Target2.dll", newBytes);
 
             var newAssembly = Assembly.LoadFile(Path.GetFullPath("WorkTask.Target2.dll"));
