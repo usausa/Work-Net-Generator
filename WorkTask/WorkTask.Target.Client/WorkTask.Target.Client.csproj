@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WorkTask.Library\WorkTask.Library.csproj" />
+    <ProjectReference Include="..\WorkTask.Target\WorkTask.Target.csproj" />
+  </ItemGroup>
+
+</Project>
