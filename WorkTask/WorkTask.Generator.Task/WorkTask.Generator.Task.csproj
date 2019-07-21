@@ -1,11 +1,29 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WorkTask.Generator.Core\WorkTask.Generator.Core.csproj" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="16.0.461" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.0.461" />
+    <PackageReference Update="@(PackageReference)" PrivateAssets="All" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WorkTask.Generator.Core\WorkTask.Generator.Core.csproj" PrivateAssets="all" />
+  </ItemGroup>
+
+  <Target Name="PackTaskDependencies" BeforeTargets="GenerateNuspec">
+    <ItemGroup>
+      <_PackageFiles Include="$(OutDir)\**\*.dll" Exclude="$(OutDir)$(TargetFileName)">
+        <PackagePath>tasks\netstandard2.0\%(RecursiveDir)</PackagePath>
+        <Visible>false</Visible>
+        <BuildAction>Content</BuildAction>
+      </_PackageFiles>
+    </ItemGroup>
+  </Target>
 
 </Project>

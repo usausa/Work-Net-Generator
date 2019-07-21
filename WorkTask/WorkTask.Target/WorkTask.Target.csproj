@@ -8,4 +8,12 @@
     <ProjectReference Include="..\WorkTask.Library\WorkTask.Library.csproj" />
   </ItemGroup>
 
+  <UsingTask TaskName="GeneratorTask" AssemblyFile="$(MSBuildProjectDirectory)\..\WorkTask.Generator.Task\bin\Debug\netstandard2.0\WorkTask.Generator.Task.dll" />
+
+  <Target Name="GenerateWork" AfterTargets="Build" Inputs="$(OutputPath)$(TargetFileName)" Outputs="$(OutputPath)$(AssemblyName)_Impl.dll" >
+
+    <GeneratorTask SourceFiles="@(Compile)" TargetFile="$(OutputPath)$(TargetFileName)" OutputFile="$(OutputPath)$(AssemblyName)_Impl.dll" />
+    <Message Text="Work generated" />
+  </Target>
+
 </Project>
