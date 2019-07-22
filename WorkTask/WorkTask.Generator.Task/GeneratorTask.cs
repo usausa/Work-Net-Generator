@@ -12,6 +12,9 @@
         public ITaskItem[] SourceFiles { get; set; }
 
         [Required]
+        public ITaskItem[] ReferenceFiles { get; set; }
+
+        [Required]
         public ITaskItem TargetFile { get; set; }
 
         [Required]
@@ -25,6 +28,12 @@
             foreach (var source in SourceFiles)
             {
                 LogFileInfo(source.ItemSpec);
+            }
+
+            Log.LogMessage("[ReferenceFiles]");
+            foreach (var reference in ReferenceFiles)
+            {
+                LogFileInfo(reference.ItemSpec);
             }
 
             Log.LogMessage("[SourceFiles]");
