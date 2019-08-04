@@ -4,16 +4,33 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
-  <Target Name="GenerateWork" AfterTargets="Build" Inputs="$(OutputPath)$(TargetFileName)" Outputs="$(OutputPath)$(AssemblyName)_Impl.dll">
-    <Copy SourceFiles="$(OutputPath)$(TargetFileName)" DestinationFiles="$(OutputPath)$(AssemblyName)_Impl.dll" />
+  <Target Name="GenerateGetCopyToOutputDirectoryItems" BeforeTargets="GetCopyToOutputDirectoryItems">
+    <Message Text="**** GenerateGetCopyToOutputDirectoryItems ****"/>
+
+    <PropertyGroup>
+      <FullPath>$([System.IO.Path]::GetFullPath('$(OutputPath)$(AssemblyName).sha256'))</FullPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <FileWrites Include="$(OutputPath)$(AssemblyName).sha256"/>
+
+      <AllItemsFullPathWithTargetPath Include="$(FullPath)">
+        <TargetPath>$(AssemblyName).sha256</TargetPath>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </AllItemsFullPathWithTargetPath>
+    </ItemGroup>
   </Target>
 
-  <Target Name="IncludeCustomContent" BeforeTargets="ResolveAssemblyReferences">
-    <ItemGroup>
-      <None Include="$(OutputPath)$(AssemblyName)_Impl.dll" Link="$(AssemblyName)_Impl.dll" >
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-    </ItemGroup>
+
+  <Target Name="GenerateAdditionalItems" AfterTargets="Build" Inputs="$(OutputPath)$(TargetFileName)" Outputs="$(OutputPath)$(AssemblyName).sha256">
+    <Message Text="**** GenerateAdditionalItems ****"/>
+
+    <GetFileHash Files="$(OutputPath)$(TargetFileName)">
+      <Output TaskParameter="Items" ItemName="Hash" />
+    </GetFileHash>
+
+    <WriteLinesToFile File="$(OutputPath)$(AssemblyName).sha256" Lines="@(Hash->'%(FileHash)')" Overwrite="true"/>
+
   </Target>
 
 </Project>
