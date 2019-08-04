@@ -9,8 +9,6 @@
   </Target>
 
   <Target Name="IncludeCustomContent" BeforeTargets="ResolveAssemblyReferences">
-    <Message Text="IncludeCustomContent" />
-    <Message Text="$(OutputPath)" />
     <ItemGroup>
       <None Include="$(OutputPath)$(AssemblyName)_Impl.dll" Link="$(AssemblyName)_Impl.dll" >
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
