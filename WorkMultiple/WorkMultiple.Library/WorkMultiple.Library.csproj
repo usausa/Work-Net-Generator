@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <Target Name="GenerateWork" AfterTargets="Build" Inputs="$(OutputPath)$(TargetFileName)" Outputs="$(OutputPath)$(AssemblyName)_Impl.dll">
+    <Copy SourceFiles="$(OutputPath)$(TargetFileName)" DestinationFiles="$(OutputPath)$(AssemblyName)_Impl.dll" />
+  </Target>
+
+  <Target Name="IncludeCustomContent" BeforeTargets="ResolveAssemblyReferences">
+    <Message Text="IncludeCustomContent" />
+    <Message Text="$(OutputPath)" />
+    <ItemGroup>
+      <None Include="$(OutputPath)$(AssemblyName)_Impl.dll" Link="$(AssemblyName)_Impl.dll" >
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+  </Target>
+
+</Project>
