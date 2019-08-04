@@ -4,33 +4,35 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <GenerateFileName>$(AssemblyName).sha256</GenerateFileName>
+  </PropertyGroup>
+
   <Target Name="GenerateGetCopyToOutputDirectoryItems" BeforeTargets="GetCopyToOutputDirectoryItems">
     <Message Text="**** GenerateGetCopyToOutputDirectoryItems ****"/>
 
     <PropertyGroup>
-      <FullPath>$([System.IO.Path]::GetFullPath('$(OutputPath)$(AssemblyName).sha256'))</FullPath>
+      <GenerateFullPath>$([System.IO.Path]::GetFullPath('$(OutputPath)$(GenerateFileName)'))</GenerateFullPath>
     </PropertyGroup>
 
     <ItemGroup>
-      <FileWrites Include="$(OutputPath)$(AssemblyName).sha256"/>
+      <FileWrites Include="$(OutputPath)$(GenerateFileName)"/>
 
-      <AllItemsFullPathWithTargetPath Include="$(FullPath)">
-        <TargetPath>$(AssemblyName).sha256</TargetPath>
+      <AllItemsFullPathWithTargetPath Include="$(GenerateFullPath)">
+        <TargetPath>$(GenerateFileName)</TargetPath>
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </AllItemsFullPathWithTargetPath>
     </ItemGroup>
   </Target>
 
-
-  <Target Name="GenerateAdditionalItems" AfterTargets="Build" Inputs="$(OutputPath)$(TargetFileName)" Outputs="$(OutputPath)$(AssemblyName).sha256">
+  <Target Name="GenerateAdditionalItems" AfterTargets="Build" Inputs="$(OutputPath)$(TargetFileName)" Outputs="$(OutputPath)$(GenerateFileName)">
     <Message Text="**** GenerateAdditionalItems ****"/>
 
     <GetFileHash Files="$(OutputPath)$(TargetFileName)">
       <Output TaskParameter="Items" ItemName="Hash" />
     </GetFileHash>
 
-    <WriteLinesToFile File="$(OutputPath)$(AssemblyName).sha256" Lines="@(Hash->'%(FileHash)')" Overwrite="true"/>
-
+    <WriteLinesToFile File="$(OutputPath)$(GenerateFileName)" Lines="@(Hash->'%(FileHash)')" Overwrite="true"/>
   </Target>
 
 </Project>
