@@ -15,7 +15,7 @@
   <UsingTask TaskName="GeneratorTask" AssemblyFile="$(MSBuildProjectDirectory)\..\WorkTask.Generator.Task\bin\Debug\netstandard2.0\WorkTask.Generator.Task.dll" />
 
   <Target Name="GenerateWork" AfterTargets="Build" Inputs="$(OutputPath)$(TargetFileName)" Outputs="$(OutputPath)$(AssemblyName)_Impl.dll">
-    <GeneratorTask SourceFiles="@(Compile)" TargetFile="$(OutputPath)$(TargetFileName)" OutputFile="$(OutputPath)$(AssemblyName)_Impl.dll" />
+    <GeneratorTask SourceFiles="@(Compile)" ReferenceFiles="@(Reference)" TargetFile="$(OutputPath)$(TargetFileName)" OutputFile="$(OutputPath)$(AssemblyName)_Impl.dll" />
     <Exec Command="$(ILRepack) /lib:$(OutputPath) /out:$(OutputPath)$(TargetFileName) $(OutputPath)$(TargetFileName) $(OutputPath)$(AssemblyName)_Impl.dll" />
     <Message Text="Work generated" />
   </Target>
