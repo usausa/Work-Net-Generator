@@ -5,7 +5,9 @@
     <GenerateFileName>$(AssemblyName).sha256</GenerateFileName>
   </PropertyGroup>
 
-  <Target Name="GenerateGetCopyToOutputDirectoryItems" BeforeTargets="GetCopyToOutputDirectoryItems">
+  <!-- GenerateGetCopyToOutputDirectoryItems -->
+  <Target Name="GenerateGetCopyToOutputDirectoryItems"
+          BeforeTargets="GetCopyToOutputDirectoryItems">
     <Message Text="**** GenerateGetCopyToOutputDirectoryItems ****"/>
 
     <PropertyGroup>
@@ -19,15 +21,34 @@
         <TargetPath>$(GenerateFileName)</TargetPath>
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </AllItemsFullPathWithTargetPath>
+    </ItemGroup>
+  </Target>
 
+  <!-- GenerateGetCopyToPublishDirectoryItems -->
+  <Target Name="GenerateGetCopyToPublishDirectoryItems"
+          BeforeTargets="GetCopyToPublishDirectoryItems"
+          Returns="@(AllPublishItemsFullPathWithTargetPath)">
+    <Message Text="**** GenerateGetCopyToPublishDirectoryItems ****"/>
+
+    <PropertyGroup>
+      <GenerateFullPath>$([System.IO.Path]::GetFullPath('$(OutputPath)$(GenerateFileName)'))</GenerateFullPath>
+    </PropertyGroup>
+
+    <Message Text="$(GenerateFullPath)"/>
+
+    <ItemGroup>
       <AllPublishItemsFullPathWithTargetPath Include="$(GenerateFullPath)">
         <TargetPath>$(GenerateFileName)</TargetPath>
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       </AllPublishItemsFullPathWithTargetPath>
     </ItemGroup>
   </Target>
 
-  <Target Name="GenerateAdditionalItems" AfterTargets="Build" Inputs="$(OutputPath)$(TargetFileName)" Outputs="$(OutputPath)$(GenerateFileName)">
+  <!-- GenerateAdditionalItems -->
+  <Target Name="GenerateAdditionalItems"
+          AfterTargets="Build"
+          Inputs="$(OutputPath)$(TargetFileName)"
+          Outputs="$(OutputPath)$(GenerateFileName)">
     <Message Text="**** GenerateAdditionalItems ****"/>
 
     <GetFileHash Files="$(OutputPath)$(TargetFileName)">

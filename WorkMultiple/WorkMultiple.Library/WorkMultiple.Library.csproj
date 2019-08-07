@@ -6,8 +6,4 @@
 
   <Import Project="..\WorkMultiple.targets" />
 
-  <ItemGroup>
-    <ProjectReference Include="..\WorkMultiple.Library.Sub\WorkMultiple.Library.Sub.csproj" />
-  </ItemGroup>
-
 </Project>
