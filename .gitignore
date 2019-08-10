@@ -254,3 +254,6 @@ paket-files/
 # Folder customize
 desktop.ini
 __*
+/WorkBuild/Tools
+/WorkBuild/WorkBuild.Library.Generator/Properties
+/WorkBuild/test.bat

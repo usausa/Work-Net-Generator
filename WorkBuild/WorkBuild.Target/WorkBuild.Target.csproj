@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WorkBuild.Library\WorkBuild.Library.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Data.Common" Version="4.3.0" />
+    <PackageReference Include="System.Memory" Version="4.5.3" />
+    <PackageReference Include="Usa.Smart.Core" Version="1.7.5" />
+  </ItemGroup>
+
+  <Target Name="GenerateBuild" AfterTargets="Build">
+    <WriteLinesToFile File="$(OutputPath)Reference.txt" Lines="@(ReferencePath)" Overwrite="true" />
+
+    <Exec Command="dotnet &quot;$(ProjectDir)..\Tools\WorkBuild.Library.Generator.dll&quot; &quot;$(OutputPath)$(TargetFileName)&quot; &quot;$(ProjectDir)$(IntermediateOutputPath)Generator&quot; &quot;@(ReferencePath)&quot;" />
+
+    <ItemGroup>
+      <GeneratedFiles Include="$([System.IO.Directory]::GetFiles(`$(ProjectDir)$(IntermediateOutputPath)Generator`))" />
+    </ItemGroup>
+
+    <!--
+    <WriteLinesToFile File="$(OutputPath)GeneratedFiles.txt" Lines="@(GeneratedFiles)" Overwrite="true" />
+    -->
+
+    <!-- TODO csc (reference + output) -->
+
+  </Target>
+
+  <Target Name="GenerateClean" AfterTargets="Clean">
+    <RemoveDir Directories="$(ProjectDir)$(IntermediateOutputPath)Generator"/>
+  </Target>
+
+  <!-- TODO output (pdb) -->
+  <Target Name="GenerateGetCopyToOutputDirectoryItems" BeforeTargets="GetCopyToOutputDirectoryItems">
+  </Target>
+
+
+  <!-- TODO output (pdb) -->
+
+</Project>

@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WorkBuild.Library\WorkBuild.Library.csproj" />
+    <ProjectReference Include="..\WorkBuild.Target\WorkBuild.Target.csproj" />
+  </ItemGroup>
+
+</Project>
