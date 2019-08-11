@@ -14,6 +14,14 @@
     <PackageReference Include="Usa.Smart.Core" Version="1.7.5" />
   </ItemGroup>
 
+  <!-- Property -->
+  <PropertyGroup>
+    <GenerateTargetName>$(AssemblyName).Impl</GenerateTargetName>
+    <GenerateAssembly>$(GenerateTargetName).dll</GenerateAssembly>
+    <GenerateDebugSymbol>$(GenerateTargetName).pdb</GenerateDebugSymbol>
+  </PropertyGroup>
+
+  <!-- Build -->
   <Target Name="GenerateBuild" AfterTargets="Build">
     <WriteLinesToFile File="$(OutputPath)Reference.txt" Lines="@(ReferencePath)" Overwrite="true" />
 
@@ -23,23 +31,57 @@
       <GeneratedFiles Include="$([System.IO.Directory]::GetFiles(`$(ProjectDir)$(IntermediateOutputPath)Generator`))" />
     </ItemGroup>
 
-    <!--
-    <WriteLinesToFile File="$(OutputPath)GeneratedFiles.txt" Lines="@(GeneratedFiles)" Overwrite="true" />
-    -->
+    <ItemGroup>
+      <ReferencesWithOutput Include="@(ReferencePath)" />
+      <ReferencesWithOutput Include="$(OutputPath)$(TargetFileName)" />
+    </ItemGroup>
 
-    <!-- TODO csc (reference + output) -->
+    <Csc TargetType="library"
+         DebugType="$(DebugType)"
+         DefineConstants="$(DefineConstants)"
+         Optimize="$(Optimize)"
+         Sources="@(GeneratedFiles)"
+         References="@(ReferencesWithOutput)"
+         OutputAssembly="$(OutputPath)$(GenerateAssembly)"/>
 
   </Target>
 
+  <!-- Clean -->
   <Target Name="GenerateClean" AfterTargets="Clean">
     <RemoveDir Directories="$(ProjectDir)$(IntermediateOutputPath)Generator"/>
   </Target>
 
-  <!-- TODO output (pdb) -->
+  <!-- GetCopyToOutputDirectoryItems -->
   <Target Name="GenerateGetCopyToOutputDirectoryItems" BeforeTargets="GetCopyToOutputDirectoryItems">
+    <ItemGroup>
+      <FileWrites Include="$(OutputPath)$(GenerateAssembly)"/>
+      <FileWrites Include="$(OutputPath)$(GenerateDebugSymbol)"/>
+
+      <AllItemsFullPathWithTargetPath Include="$(ProjectDir)$(OutputPath)$(GenerateAssembly)">
+        <TargetPath>$(GenerateAssembly)</TargetPath>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </AllItemsFullPathWithTargetPath>
+      <AllItemsFullPathWithTargetPath Include="$(ProjectDir)$(OutputPath)$(GenerateDebugSymbol)">
+        <TargetPath>$(GenerateDebugSymbol)</TargetPath>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </AllItemsFullPathWithTargetPath>
+    </ItemGroup>
   </Target>
 
-
-  <!-- TODO output (pdb) -->
+  <!-- GetCopyToOutputDirectoryItems -->
+  <Target Name="GenerateGetCopyToPublishDirectoryItems"
+          BeforeTargets="GetCopyToPublishDirectoryItems"
+          Returns="@(AllPublishItemsFullPathWithTargetPath)">
+    <ItemGroup>
+      <AllPublishItemsFullPathWithTargetPath Include="$(ProjectDir)$(OutputPath)$(GenerateAssembly)">
+        <TargetPath>$(GenerateAssembly)</TargetPath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </AllPublishItemsFullPathWithTargetPath>
+      <AllPublishItemsFullPathWithTargetPath Include="$(ProjectDir)$(OutputPath)$(GenerateDebugSymbol)">
+        <TargetPath>$(GenerateDebugSymbol)</TargetPath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </AllPublishItemsFullPathWithTargetPath>
+    </ItemGroup>
+  </Target>
 
 </Project>

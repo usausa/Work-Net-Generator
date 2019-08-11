@@ -10,4 +10,8 @@
     <ProjectReference Include="..\WorkBuild.Target\WorkBuild.Target.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
+  </ItemGroup>
+
 </Project>

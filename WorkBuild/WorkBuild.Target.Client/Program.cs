@@ -1,4 +1,6 @@
-﻿namespace WorkBuild.Target.Client
+﻿using Smart.ComponentModel;
+
+namespace WorkBuild.Target.Client
 {
     using WorkBuild.Library;
 
@@ -10,6 +12,7 @@
             var loader = new Loader(engine);
 
             var impl = loader.Load<IExecute>();
+            impl.Execute(new NotificationValue<int>(1));
         }
     }
 }
