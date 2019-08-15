@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateFile>DataFiles.txt</GenerateFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <DataFiles Include="**\*.dat" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Include="@(DataFiles)" />
+    <UpToDateCheckBuild Include="$(OutputPath)$(GenerateFile)" />
+  </ItemGroup>
+
+  <Target Name="TestBuild" AfterTargets="Build" Inputs="@(DataFiles)" Outputs="$(OutputPath)$(GenerateFile)">
+
+    <Message Text="**** TestBuild ****" />
+
+    <WriteLinesToFile File="$(OutputPath)$(GenerateFile)" Lines="@(DataFiles)" Overwrite="true" />
+
+  </Target>
+
+</Project>
