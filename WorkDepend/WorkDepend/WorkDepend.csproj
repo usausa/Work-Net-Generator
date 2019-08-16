@@ -14,16 +14,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <UpToDateCheckInput Include="@(DataFiles)" />
-    <UpToDateCheckBuild Include="$(OutputPath)$(GenerateFile)" />
+    <UpToDateCheckBuilt Include="$(OutputPath)$(GenerateFile)" Original="@(DataFiles)" />
   </ItemGroup>
 
   <Target Name="TestBuild" AfterTargets="Build" Inputs="@(DataFiles)" Outputs="$(OutputPath)$(GenerateFile)">
-
     <Message Text="**** TestBuild ****" />
-
     <WriteLinesToFile File="$(OutputPath)$(GenerateFile)" Lines="@(DataFiles)" Overwrite="true" />
-
   </Target>
 
 </Project>
