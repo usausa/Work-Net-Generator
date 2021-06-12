@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "WorkAnalyzer": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "..\\WorkAnalyzerTest\\WorkAnalyzerTest.csproj"
+    }
+  }
+}
