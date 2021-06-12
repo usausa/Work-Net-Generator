@@ -6,7 +6,7 @@
     {
         static void Main()
         {
-            // TODO
+            GeneratedNamespace.GeneratedClass.GeneratedMethod();
         }
     }
 
