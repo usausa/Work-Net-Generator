@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Text;
+using System.Linq;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -13,23 +16,49 @@ namespace WorkGenerator
     {
         public void Initialize(GeneratorInitializationContext context)
         {
-            // TODO
+            context.RegisterForSyntaxNotifications(() => new SyntaxReceiver());
         }
 
         public void Execute(GeneratorExecutionContext context)
         {
+            if (context.SyntaxReceiver is not SyntaxReceiver receiver)
+            {
+                return;
+            }
+
+            var viewAttributeSymbol = context.Compilation.GetTypeByMetadataName("WorkLibrary.ViewAttribute");
+
+            foreach (var classDeclarationSyntax in receiver.CandidateClasses)
+            {
+                var model = context.Compilation.GetSemanticModel(classDeclarationSyntax.SyntaxTree);
+                var typeSymbol = ModelExtensions.GetDeclaredSymbol(model, classDeclarationSyntax);
+
+                var attribute = typeSymbol.GetAttributes()
+                    .FirstOrDefault(x => x.AttributeClass.Equals(viewAttributeSymbol, SymbolEqualityComparer.Default));
+                if (attribute is null)
+                {
+                    continue;
+                }
+
+                var value = attribute.ConstructorArguments[0].Value;
+                Debug.WriteLine(value);
+            }
+
             // TODO
-            context.AddSource("Hello.cs", SourceText.From(@"
-namespace GeneratedNamespace
-{
-    public class GeneratedClass
-    {
-        public static void GeneratedMethod()
-        {
-            // generated code
         }
-    }
-}", Encoding.UTF8));
+
+        internal class SyntaxReceiver : ISyntaxReceiver
+        {
+            public List<ClassDeclarationSyntax> CandidateClasses { get; } = new();
+
+            public void OnVisitSyntaxNode(SyntaxNode syntaxNode)
+            {
+                // 属性があるクラスを候補
+                if ((syntaxNode is ClassDeclarationSyntax { AttributeLists: { Count: > 0 } } classDeclarationSyntax))
+                {
+                    CandidateClasses.Add(classDeclarationSyntax);
+                }
+            }
         }
     }
 }
