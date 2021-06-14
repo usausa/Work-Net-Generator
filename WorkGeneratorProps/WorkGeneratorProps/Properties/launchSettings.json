@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "WorkGeneratorProps": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "..\\WorkGeneratorTarget\\WorkGeneratorTarget.csproj"
+    }
+  }
+}
