@@ -10,19 +10,19 @@
     <CompilerGeneratedFilesOutputPath>obj\Generated</CompilerGeneratedFilesOutputPath>
   </PropertyGroup>
 
+  <!--
   <ItemGroup>
     <PackageReference Include="WorkGeneratorProps" Version="1.0.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+  -->
 
-  <!--
   <Import Project="..\WorkGeneratorProps\build\WorkGeneratorProps.props" />
 
   <ItemGroup>
     <ProjectReference Include="..\WorkGeneratorProps\WorkGeneratorProps.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
-  -->
 
 </Project>
