@@ -52,35 +52,26 @@ public sealed class Generator : IIncrementalGenerator
             return null;
         }
 
-        var attribute = typeSymbol.GetAttributes()
-            .FirstOrDefault(x => x.AttributeClass!.ToDisplayString() == "Library.ViewAttribute");
-        if (attribute is null)
-        {
-            return null;
-        }
-
-        if (attribute.ConstructorArguments.Length == 0)
-        {
-            return null;
-        }
-
-        var viewIdType = attribute.ConstructorArguments[0].Type;
-        if (viewIdType is null)
+        var attributes = typeSymbol.GetAttributes()
+            .Where(x => x.AttributeClass!.ToDisplayString() == "Library.ViewAttribute" &&
+                        x.ConstructorArguments.Length == 1)
+            .Select(x => x.ConstructorArguments[0])
+            .ToList();
+        if (attributes.Count == 0)
         {
             return null;
         }
 
         return new ViewModel(
             typeSymbol.ToDisplayString(),
-            viewIdType.ToDisplayString(),
-            attribute.ConstructorArguments[0].ToCSharpString(),
-            attribute.ConstructorArguments[0].Value);
+            attributes[0].Type!.ToDisplayString(),
+            attributes.Select(x => new ViewIdEntry(x.ToCSharpString(), x.Value)).ToArray());
     }
 
     private static SourceModel? GetSourceModel(GeneratorSyntaxContext context)
     {
         var methodDeclarationSyntax = (MethodDeclarationSyntax)context.Node;
-        if (methodDeclarationSyntax.ParameterList.Parameters.Count != 1)
+        if (methodDeclarationSyntax.ParameterList.Parameters.Count != 0)
         {
             return null;
         }
@@ -92,31 +83,22 @@ public sealed class Generator : IIncrementalGenerator
         }
 
         var attribute = methodSymbol.GetAttributes()
-            .FirstOrDefault(x => x.AttributeClass!.ToDisplayString() == "Library.ViewRegistration");
+            .FirstOrDefault(x => x.AttributeClass!.ToDisplayString() == "Library.ViewSource");
         if (attribute is null)
         {
             return null;
         }
 
-        if (methodSymbol.ReturnType.SpecialType != SpecialType.System_Void)
+        if ((methodSymbol.ReturnType is not INamedTypeSymbol returnTypeSymbol) ||
+            (returnTypeSymbol.TypeArguments.Length != 1) ||
+            (returnTypeSymbol.ConstructedFrom.ToDisplayString() != "System.Collections.Generic.IEnumerable<T>"))
         {
             return null;
         }
 
-        if (methodSymbol.Parameters.Length != 1)
-        {
-            return null;
-        }
-
-        var actionType = methodSymbol.Parameters[0].Type;
-        if (actionType is not INamedTypeSymbol actionSymbol)
-        {
-            return null;
-        }
-
-        if ((actionSymbol.TypeArguments.Length != 2) ||
-            (actionSymbol.ConstructedFrom.ToDisplayString() != "System.Action<T1, T2>") ||
-            actionSymbol.TypeArguments[1].ToDisplayString() != "System.Type")
+        if ((returnTypeSymbol.TypeArguments[0] is not INamedTypeSymbol keyValueTypeSymbol) ||
+            (keyValueTypeSymbol.TypeArguments.Length != 2) ||
+            (keyValueTypeSymbol.ConstructedFrom.ToDisplayString() != "System.Collections.Generic.KeyValuePair<TKey, TValue>"))
         {
             return null;
         }
@@ -132,9 +114,9 @@ public sealed class Generator : IIncrementalGenerator
             containingType.IsValueType,
             methodSymbol.DeclaredAccessibility,
             methodSymbol.Name,
-            methodSymbol.Parameters[0].Type.ToDisplayString(),
-            methodSymbol.Parameters[0].Name,
-            actionSymbol.TypeArguments[0].ToDisplayString());
+            returnTypeSymbol.ToDisplayString(),
+            keyValueTypeSymbol.ToDisplayString(),
+            keyValueTypeSymbol.TypeArguments[0].ToDisplayString());
     }
 
     private static void Execute(SourceProductionContext context, ImmutableArray<ViewModel> viewModels, ImmutableArray<SourceModel> sourceModels)
@@ -167,28 +149,26 @@ public sealed class Generator : IIncrementalGenerator
             // method
             buffer.Append("        ");
             buffer.Append(ToAccessibilityText(sourceModel.MethodAccessibility));
-            buffer.Append(" static partial void ");
-            buffer.Append(sourceModel.MethodName);
-            buffer.Append("(");
-            buffer.Append(sourceModel.ArgumentType);
+            buffer.Append(" static partial ");
+            buffer.Append(sourceModel.ReturnTypeName);
             buffer.Append(' ');
-            buffer.Append(sourceModel.ArgumentName);
-            buffer.Append(")");
+            buffer.Append(sourceModel.MethodName);
+            buffer.Append("()");
             buffer.AppendLine();
 
             buffer.AppendLine("        {");
 
             if (viewModelMap.TryGetValue(sourceModel.ViewIdClassFullName, out var views))
             {
-                foreach (var viewModel in views.OrderBy(x => x.Value))
+                foreach (var entry in views.SelectMany(x => x.Entries.Select(y => new { Model = x, Entry = y })).OrderBy(x => x.Entry.Value))
                 {
-                    buffer.Append("            ");
-                    buffer.Append(sourceModel.ArgumentName);
+                    buffer.Append("            yield return new ");
+                    buffer.Append(sourceModel.EntryTypeName);
                     buffer.Append('(');
-                    buffer.Append(viewModel.ViewIdFullName);
+                    buffer.Append(entry.Entry.ViewIdFullName);
                     buffer.Append(", ");
                     buffer.Append("typeof(");
-                    buffer.Append(viewModel.ClassFullName);
+                    buffer.Append(entry.Model.ClassFullName);
                     buffer.Append("));");
                     buffer.AppendLine();
                 }
@@ -239,7 +219,7 @@ namespace Library
 {
     [System.Diagnostics.Conditional(""COMPILE_TIME_ONLY"")]
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-    public sealed class ViewRegistration : Attribute
+    public sealed class ViewSource : Attribute
     {
     }
 }
@@ -247,14 +227,17 @@ namespace Library
 
     private static void AddAttribute(IncrementalGeneratorPostInitializationContext context)
     {
-        context.AddSource("ViewRegistration", SourceText.From(AttributeSource, Encoding.UTF8));
+        context.AddSource("ViewSource", SourceText.From(AttributeSource, Encoding.UTF8));
     }
+
+    internal sealed record ViewIdEntry(
+        string ViewIdFullName,
+        object? Value);
 
     internal sealed record ViewModel(
         string ClassFullName,
         string ViewIdClassFullName,
-        string ViewIdFullName,
-        object? Value);
+        ViewIdEntry[] Entries);
 
     internal sealed record SourceModel(
         string Namespace,
@@ -262,7 +245,7 @@ namespace Library
         bool IsValueType,
         Accessibility MethodAccessibility,
         string MethodName,
-        string ArgumentType,
-        string ArgumentName,
+        string ReturnTypeName,
+        string EntryTypeName,
         string ViewIdClassFullName);
 }
